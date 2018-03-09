@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-  <button class="btn btn-info pull-right">
+  <button class="btn btn-info pull-right" @click="logOut">
     <span class="glyphicon glyphicon-log-out"></span> Log out</button>
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#home">Posts </a></li>
@@ -23,6 +23,12 @@ import TabPost from './Post'
 import Account from './Account'
 export default {
   name: 'Home',
-  components: {TabPost, Account}
+  components: {TabPost, Account},
+  methods: {
+    logOut () {
+      localStorage.removeItem('token')
+      this.$router.push({path: '/login'})
+    }
+  }
 }
 </script>
