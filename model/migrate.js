@@ -56,11 +56,11 @@ class Migrate {
                 t.string('name').notNullable()
                 t.integer('role').default(0)
                 t.timestamps()
-                console.log(chalk.green("Table Post created!!!"))
+                console.log(chalk.green("Table Account created!!!"))
             })
 
         } else {
-            console.log(chalk.blue('Table Post existed'))
+            console.log(chalk.blue('Table Account existed'))
         }        
     }    
     async run(){
