@@ -38,7 +38,6 @@ router.post("/post",async(req,res) => {
         let rndToken = await helper.getRandomToken()
         postInfo = await helper.getInfoPost(postId,rndToken)
         postInfo = JSON.parse(postInfo)
-        console.log(postInfo.picture)
     } catch (error) {
         return res.json({
             status : 0,
@@ -46,22 +45,21 @@ router.post("/post",async(req,res) => {
         })
     }
     // add new post to dababase
-    // try {
-        let picture = postInfo.picture
+    try {
         let post = await db('post').insert({
             post_id : postId,
             page_id : postInfo.from.id,
-            picture : picture || 'https://pm1.narvii.com/6270/2f3dcb8f19e19bcc4a7966a24f9635c988500095_128.jpg'
+            picture : postInfo.picture || 'https://1.bp.blogspot.com/_UqUwVPikChs/R-C7tnbATLI/AAAAAAAAC98/qZZ4_CHb66U/s320/unknown-naruto-tux-1667.png'
         })
         return res.json({
             message : "Success",
             post : post
         })
-    // } catch (error) {
-    //     return res.json({
-    //         message : "Has error when insert post"
-    //     })
-    // }
+    } catch (error) {
+        return res.json({
+            message : "Has error when insert post"
+        })
+    }
 })
 
 /**
