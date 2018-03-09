@@ -56,17 +56,17 @@ class Migrate {
                 t.string('name').notNullable()
                 t.integer('role').default(0)
                 t.timestamps()
-                console.log(chalk.green("Table Account created!!!"))
+                console.log(chalk.green("Table User created!!!"))
             })
 
         } else {
-            console.log(chalk.blue('Table Account existed'))
+            console.log(chalk.blue('Table User existed'))
         }        
     }    
     async run(){
        await this.createAccountTable()
        await this.createPostTable()
-       await this.createAccountTable()
+       await this.createUserTable()
        await db.destroy()
     }
 }
