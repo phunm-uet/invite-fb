@@ -17,6 +17,7 @@ class Migrate {
                 t.text('access_token').notNullable()
                 t.text('cookie').notNullable()
                 t.integer('num_invited').default(0)
+                t.boolean('status').default(1)
                 t.timestamps()
                 console.log(chalk.green("Table Account created!!!"))
             })
@@ -33,6 +34,7 @@ class Migrate {
                 t.increments('id').primary();
                 t.bigInteger('post_id').notNullable()
                 t.bigInteger('page_id').notNullable()
+                t.text('pictrue').notNullable()
                 t.integer('num_invited').default(0)
                 t.timestamps()
                 console.log(chalk.green("Table Post created!!!"))
