@@ -20,9 +20,10 @@
     "request-promise": "^4.2.2"
   },
   "scripts": {
-    "test": "node service/test",
     "migrate": "node model/migrate",
     "client": "cd client && yarn run dev",
-    "server": "node api/index"
+    "server": "node api/index",
+    "invite": "node service/invite",
+    "clearDB": "node service/resetDB"
   }
 }
