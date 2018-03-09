@@ -65,7 +65,8 @@ class Migrate {
     }    
     async run(){
        await this.createAccountTable()
-       await this.createPostTable();
+       await this.createPostTable()
+       await this.createAccountTable()
        await db.destroy()
     }
 }
