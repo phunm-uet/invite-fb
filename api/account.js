@@ -37,6 +37,7 @@ router.post('/account', async (req,res) => {
             cookie : accountInfo.cookie,
             user_id : accountInfo.user_id,
             access_token : accountInfo.access_token
+            name: accountInfo.name
         })
         return res.json(account)        
     } catch (error) {
