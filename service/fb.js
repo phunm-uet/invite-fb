@@ -18,12 +18,15 @@ class Facebook{
     }
 
     async checkLive(accessToken){
+        let urlRequest =  `https://graph.facebook.com/v2.10/me?access_token=${accessToken}`
         try {
-            let result = await request(API_FB + `me?access_token=${accessToken}`)
+            console.log(urlRequest)
+            let result = await request.get(urlRequest)
+            result = JSON.parse(result)
             if(result.name) return true;
             return false;            
         } catch (error) {
-            
+            return false
         }        
     }
     /** 
@@ -71,6 +74,7 @@ class Facebook{
             if(result) {
                 let regex = /invitee=([0-9]+)/g
                 let tmp = regex.exec(pathInvite)
+                if(!tmp) { return 0 }
                 return tmp[1]
             }
             return ;
@@ -104,11 +108,12 @@ class Facebook{
                     let urlPathInvite = tmp[1].replace(/&amp;/g, '&')
                     lInvitee.push(urlPathInvite)
                 }
-            } while (tmp);
+            } while (tmp)
             return lInvitee;
         } catch (error) {
-            return error
+            return lInvitee
         }
+        return lInvitee
     }
 
     async invitePost(postId,userId,maxLimitInvite){
@@ -120,6 +125,7 @@ class Facebook{
         for(let pathInvite of lInvitee){
             try {
                 let invited = await this.inviteLike(pathInvite,userId,token)
+                if(invited == 0) return 0;
                 await this.deplay(2000);
                 if(process.env.DEBUG){
                     console.log("Invited : "+ invited)

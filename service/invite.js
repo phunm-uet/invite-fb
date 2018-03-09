@@ -5,13 +5,6 @@ const schedule = require('node-schedule')
 const MAXINVITE = 400
 const MAXINVITEONCE = 10
 
-async function checkLive(accessToken) { 
-    try {
-        let result = await(`https://graph.facebook.com/v2.12/me?access_token=${accessToken}`)
-    } catch (error) {
-        
-    }
-}
 async function bulkInvite(posts, accounts){
     let flag = 0;
     await posts.forEach(async (post,index) => {

@@ -4,6 +4,7 @@ const API_FB = "https://graph.facebook.com/v2.10/"
 class Helper {
     async getRandomToken(){
         let account = await db('account')
+                            .where('status',1)
                             .orderBy('updated_at','desc')
                             .limit(1)
                             .select()
