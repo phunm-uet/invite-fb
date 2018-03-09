@@ -8,6 +8,7 @@
                   <th></th>
                   <th class="text-center">Post ID</th>
                   <th class="text-center">Page</th>
+                  <th class="text-center">Number Invited</th>
                   <th class="text-center">Action</th>
                 </tr>
           </thead>
@@ -17,6 +18,7 @@
                   <td><img :src="post.picture" style="width : 50px;"/></td>
                   <td><a :href="'https://business.facebook.com/'+post.post_id" target="_blank">{{post.post_id}}</a></td>
                   <td><a :href="'https://business.facebook.com/'+post.page_id" target="_blank">{{post.page_id}}</a></td>
+                  <td>{{post.num_invited}}</td>
                   <td>
                     <button type="button" class="btn btn-danger btn-xs" @click="deletePost(post.post_id,index)">Delete</button>
                   </td>
