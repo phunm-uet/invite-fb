@@ -2,14 +2,14 @@ const Facebook = require('./fb.js');
 const db = require('../model/db')
 const schedule = require('node-schedule')
 const MAXINVITE = 400
-
+const MAXINVITEONCE = 10
 async function bulkInvite(posts, accounts){
     let flag = 0;
     await posts.forEach(async (post,index) => {
         let account = accounts[index]
         let cookie = account.cookie
         let fb = new Facebook(cookie)
-        let numInvited = await fb.invitePost(post.post_id,account.user_id,1);
+        let numInvited = await fb.invitePost(post.post_id,account.user_id,MAXINVITEONCE);
         
         await db('account').where('user_id',account.user_id)
                             .update({
@@ -23,7 +23,6 @@ async function bulkInvite(posts, accounts){
                         })
         flag++;
         console.log("Invited Post "+ post.post_id + " : " + numInvited)
-        if(flag == posts.length) { await db.destroy() }
     });
     
 }
@@ -31,12 +30,14 @@ async function bulkInvite(posts, accounts){
 async function main(){
     let accounts = await db('account')
                     .where('num_invited','<', MAXINVITE)
+                    .where('status',1)
                     .select()
     let numAcc = accounts.length;
     // Stop when no account in database
     if(numAcc == 0) return ;
     let posts = await db('post').orderBy('updated_at','desc')
                         .limit(numAcc)
+                        .where('status',1)
                         .select()
     let tmp = await bulkInvite(posts,accounts)
 }

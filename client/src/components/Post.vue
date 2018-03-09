@@ -9,6 +9,7 @@
                   <th class="text-center">Post ID</th>
                   <th class="text-center">Page</th>
                   <th class="text-center">Number Invited</th>
+                  <th class="text-center"> Status </th>
                   <th class="text-center">Action</th>
                 </tr>
           </thead>
@@ -19,6 +20,10 @@
                   <td><a :href="'https://business.facebook.com/'+post.post_id" target="_blank">{{post.post_id}}</a></td>
                   <td><a :href="'https://business.facebook.com/'+post.page_id" target="_blank">{{post.page_id}}</a></td>
                   <td>{{post.num_invited}}</td>
+                  <td>
+                   <span class="label label-success" v-if="post.status == 1">Running</span>
+                   <span class="label label-warning" v-if="post.status == 0">Stoped</span>
+                  </td>
                   <td>
                     <button type="button" class="btn btn-danger btn-xs" @click="deletePost(post.post_id,index)">Delete</button>
                   </td>
