@@ -36,7 +36,7 @@ router.post('/account', async (req,res) => {
         let account = await db('account').insert({
             cookie : accountInfo.cookie,
             user_id : accountInfo.user_id,
-            access_token : accountInfo.access_token
+            access_token : accountInfo.access_token,
             name: accountInfo.name
         })
         return res.json(account)        
