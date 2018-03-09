@@ -38,7 +38,6 @@ router.post("/post",async(req,res) => {
         let rndToken = await helper.getRandomToken()
         postInfo = await helper.getInfoPost(postId,rndToken)
         postInfo = JSON.parse(postInfo)
-        console.log(postInfo)
     } catch (error) {
         return res.json({
             status : 0,
@@ -46,7 +45,7 @@ router.post("/post",async(req,res) => {
         })
     }
     // add new post to dababase
-    try {
+    // try {
         let post = await db('post').insert({
             post_id : postId,
             page_id : postInfo.from.id,
@@ -56,11 +55,11 @@ router.post("/post",async(req,res) => {
             message : "Success",
             post : post
         })
-    } catch (error) {
-        return res.json({
-            message : "Has error when insert post"
-        })
-    }
+    // } catch (error) {
+    //     return res.json({
+    //         message : "Has error when insert post"
+    //     })
+    // }
 })
 
 /**
