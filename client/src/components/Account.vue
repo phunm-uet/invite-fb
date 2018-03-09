@@ -6,6 +6,7 @@
                 <tr>
                     <th class="text-center">ID</th>
                     <th class="text-center">User Id</th>
+                    <th class="text-center">User Name</th>
                     <!-- <th>Token</th> -->
                     <th class="text-center">Status</th>
                     <th class="text-center">Action</th>
@@ -15,6 +16,7 @@
                 <tr v-for='(acc,index) in accounts' :key="index">
                     <td>{{acc.id}}</td>
                     <td>{{acc.user_id}}</td>
+                    <td>{{acc.name}}</td>
                     <!-- <td>{{acc.access_token}}</td> -->
                     <td>
                       <span class="label label-primary label-xs" v-if="acc.status == 1">Live</span>

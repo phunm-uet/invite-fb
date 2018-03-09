@@ -18,7 +18,7 @@
                   <td>{{post.id}}</td>
                   <td><img :src="post.picture" style="width : 50px;"/></td>
                   <td><a :href="'https://business.facebook.com/'+post.post_id" target="_blank">{{post.post_id}}</a></td>
-                  <td><a :href="'https://business.facebook.com/'+post.page_id" target="_blank">{{post.page_id}}</a></td>
+                  <td><a :href="'https://business.facebook.com/'+post.page_id" target="_blank">{{post.page_name}}</a></td>
                   <td>{{post.num_invited}}</td>
                   <td>
                    <span class="label label-success" v-if="post.status == 1">Running</span>
