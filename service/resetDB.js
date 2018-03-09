@@ -11,6 +11,6 @@ async function resetNumInvited(){
 }
 
 var j = schedule.scheduleJob('* * */1 * *', function(){
-    console.log('Clear DB at : 'new Date())
+    console.log('Clear DB at : ' + new Date())
     resetNumInvited();
 })
