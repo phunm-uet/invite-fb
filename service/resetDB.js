@@ -10,7 +10,7 @@ async function resetNumInvited(){
                     .update('num_invited',0)
 }
 
-var j = schedule.scheduleJob('* * 20 * *', function(){
+var j = schedule.scheduleJob('50 23 * * *', function(){
     console.log('Clear DB at : ' + new Date())
     resetNumInvited();
 })
