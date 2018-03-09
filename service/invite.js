@@ -12,6 +12,7 @@ async function bulkInvite(posts, accounts){
         let cookie = account.cookie
         let fb = new Facebook(cookie)
         let checkLive = fb.checkLive(account.access_token)
+        console.log(account.user_id + " checkLive " + checkLive)
         if(checkLive){
             let numInvited = await fb.invitePost(post.post_id,account.user_id,MAXINVITEONCE);
         

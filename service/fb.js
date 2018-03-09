@@ -20,7 +20,6 @@ class Facebook{
     async checkLive(accessToken){
         let urlRequest =  `https://graph.facebook.com/v2.10/me?access_token=${accessToken}`
         try {
-            console.log(urlRequest)
             let result = await request.get(urlRequest)
             result = JSON.parse(result)
             if(result.name) return true;
