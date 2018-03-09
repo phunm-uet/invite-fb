@@ -4,10 +4,10 @@
         <table class="table table-striped table-hover"  style="margin-top : 20px">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>User Id</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">User Id</th>
                     <!-- <th>Token</th> -->
-                    <th>Action</th>
+                    <th class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody>
