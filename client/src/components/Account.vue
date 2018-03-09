@@ -7,6 +7,7 @@
                     <th class="text-center">ID</th>
                     <th class="text-center">User Id</th>
                     <!-- <th>Token</th> -->
+                    <th class="text-center">Status</th>
                     <th class="text-center">Action</th>
                 </tr>
             </thead>
@@ -15,6 +16,10 @@
                     <td>{{acc.id}}</td>
                     <td>{{acc.user_id}}</td>
                     <!-- <td>{{acc.access_token}}</td> -->
+                    <td>
+                      <span class="label label-primary label-xs" v-if="acc.status == 1">Live</span>
+                      <span class="label label-danger label-xs" v-if="acc.status == 0">Die</span>
+                    </td>
                     <td><button class="btn btn-danger btn-xs" @click='deleteAcc(acc.id,index)'>Delete</button></td>
                 </tr>
             </tbody>

@@ -111,11 +111,10 @@ class Facebook{
         for(let pathInvite of lInvitee){
             try {
                 let invited = await this.inviteLike(pathInvite,userId,token)
-                await this.deplay(1000);
+                await this.deplay(2000);
                 if(process.env.DEBUG){
                     console.log("Invited : "+ invited)
                 }
-                
                 num_invited++;                
             } catch (error) {
                 

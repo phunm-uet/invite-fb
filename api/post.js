@@ -62,6 +62,23 @@ router.post("/post",async(req,res) => {
     }
 })
 
+router.put("/post/:postId",async (req, res) => {
+    let postId = req.params.postId
+    let status = req.body.status
+    try {
+        await db('post').update({
+            status : status
+        }).where('post_id',postId)
+        return res.json({
+            message : 'Updated'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message : "has error"
+        })
+    }
+})
+
 /**
  * Delete post
  */

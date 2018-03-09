@@ -25,7 +25,15 @@
                    <span class="label label-warning" v-if="post.status == 0">Stoped</span>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-danger btn-xs" @click="deletePost(post.post_id,index)">Delete</button>
+                    <button type="button" class="btn btn-danger btn-xs" @click="deletePost(post.post_id,index)">
+                      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
+                    </button>
+                    <button type="button" class="btn btn-warning btn-xs" @click="updateStatus(post.post_id, index, 0)" v-if="post.status==1">
+                      <span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pause
+                    </button>
+                    <button type="button" class="btn btn-success btn-xs" @click="updateStatus(post.post_id, index, 1)" v-if="post.status==0">
+                      <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
+                    </button>
                   </td>
               </tr>
           </tbody>
@@ -114,6 +122,14 @@ export default {
         })
         this.loadPosts()
       })
+    },
+    updateStatus ( postId, index,status) {
+      axios.defaults.headers.common['Authorization'] = this.header
+      axios.put(URL_API + `/post/${postId}`,{status : status}).then(res => {
+        this.posts[index].status = status
+      }).catch(err => {
+      })
+      
     }
   }
 }
