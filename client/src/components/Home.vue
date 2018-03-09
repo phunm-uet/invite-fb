@@ -21,6 +21,6 @@ import TabPost from './Post'
 import Account from './Account'
 export default {
   name: 'Home',
-  components: {TabPost,Account}
+  components: {TabPost, Account}
 }
 </script>
