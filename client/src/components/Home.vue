@@ -1,5 +1,7 @@
 <template>
 <div class="container">
+  <button class="btn btn-info pull-right">
+    <span class="glyphicon glyphicon-log-out"></span> Log out</button>
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#home">Posts </a></li>
     <li><a data-toggle="tab" href="#menu1">Accounts </a></li>

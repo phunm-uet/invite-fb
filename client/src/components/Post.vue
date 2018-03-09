@@ -1,6 +1,7 @@
 <template>
   <div class="col-md-8 col-md-offset-2">
-    <a class="btn btn-primary btn-success pull-right" data-toggle="modal" href='#modal-id'>Add Post</a>
+    <a class="btn btn-primary btn-success pull-right" data-toggle="modal" href='#modal-id'>
+      <span class="glyphicon glyphicon-plus"></span> Add Post</a>
     <table class="table table-hover table-striped" style="margin-top : 20px">
           <thead>
               <tr>
