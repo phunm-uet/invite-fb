@@ -44,6 +44,25 @@ class Migrate {
             console.log(chalk.blue('Table Post existed'))
         }        
     }
+
+    async createUserTable(){
+        let exist = await this.checkExistTable("user")
+        if(!exist) {
+            return db.schema.createTable("user",function(t){
+                t.increments('id').primary();
+                t.string('username').notNullable()
+                t.unique('username')
+                t.string('password').notNullable()
+                t.string('name').notNullable()
+                t.integer('role').default(0)
+                t.timestamps()
+                console.log(chalk.green("Table Post created!!!"))
+            })
+
+        } else {
+            console.log(chalk.blue('Table Post existed'))
+        }        
+    }    
     async run(){
        await this.createAccountTable()
        await this.createPostTable();
