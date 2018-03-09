@@ -46,7 +46,7 @@ async function main(){
     let numAcc = accounts.length;
     // Stop when no account in database
     if(numAcc == 0) return ;
-    let posts = await db('post').orderBy('updated_at','desc')
+    let posts = await db('post').orderBy('updated_at','asc')
                         .limit(numAcc)
                         .where('status',1)
                         .select()
