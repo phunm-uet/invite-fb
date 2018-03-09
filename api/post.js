@@ -38,7 +38,7 @@ router.post("/post",async(req,res) => {
         let rndToken = await helper.getRandomToken()
         postInfo = await helper.getInfoPost(postId,rndToken)
         postInfo = JSON.parse(postInfo)
-        console.log(postInfo)
+        console.log(postInfo.picture)
     } catch (error) {
         return res.json({
             status : 0,
