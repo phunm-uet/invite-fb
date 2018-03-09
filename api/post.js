@@ -47,10 +47,11 @@ router.post("/post",async(req,res) => {
     }
     // add new post to dababase
     // try {
+        let picture = postInfo.picture
         let post = await db('post').insert({
             post_id : postId,
             page_id : postInfo.from.id,
-            picture : postInfo.picture || 'https://pm1.narvii.com/6270/2f3dcb8f19e19bcc4a7966a24f9635c988500095_128.jpg'
+            picture : picture || 'https://pm1.narvii.com/6270/2f3dcb8f19e19bcc4a7966a24f9635c988500095_128.jpg'
         })
         return res.json({
             message : "Success",
