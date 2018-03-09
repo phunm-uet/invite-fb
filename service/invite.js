@@ -5,7 +5,7 @@ const schedule = require('node-schedule')
 const MAXINVITE = 400
 const MAXINVITEONCE = 10
 
-async checkLive(accessToken) { 
+async function checkLive(accessToken) { 
     try {
         let result = await(`https://graph.facebook.com/v2.12/me?access_token=${accessToken}`)
     } catch (error) {
