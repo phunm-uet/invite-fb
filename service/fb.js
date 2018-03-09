@@ -125,7 +125,7 @@ class Facebook{
             try {
                 let invited = await this.inviteLike(pathInvite,userId,token)
                 if(invited == 0) return 0;
-                await this.deplay(2000);
+                await this.deplay(5000);
                 if(process.env.DEBUG){
                     console.log("Invited : "+ invited)
                 }
