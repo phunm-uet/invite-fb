@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-8 col-md-offset-2 col-xs-12">
-        <a class="btn btn-primary btn-success pull-right" data-toggle="modal" href='#modal-acc'>Add Post</a>
+        <a class="btn btn-primary btn-success pull-right" data-toggle="modal" href='#modal-acc'>Add Account</a>
         <table class="table table-striped table-hover"  style="margin-top : 20px">
             <thead>
                 <tr>

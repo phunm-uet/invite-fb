@@ -1,28 +1,45 @@
 const Facebook = require('./fb.js');
 const db = require('../model/db')
+
 const schedule = require('node-schedule')
 const MAXINVITE = 400
 const MAXINVITEONCE = 10
+
+async checkLive(accessToken) { 
+    try {
+        let result = await(`https://graph.facebook.com/v2.12/me?access_token=${accessToken}`)
+    } catch (error) {
+        
+    }
+}
 async function bulkInvite(posts, accounts){
     let flag = 0;
     await posts.forEach(async (post,index) => {
         let account = accounts[index]
         let cookie = account.cookie
         let fb = new Facebook(cookie)
-        let numInvited = await fb.invitePost(post.post_id,account.user_id,MAXINVITEONCE);
+        let checkLive = fb.checkLive(account.access_token)
+        if(checkLive){
+            let numInvited = await fb.invitePost(post.post_id,account.user_id,MAXINVITEONCE);
         
-        await db('account').where('user_id',account.user_id)
+            await db('account').where('user_id',account.user_id)
+                                .update({
+                                    'updated_at' :new Date(),
+                                    'num_invited' : db.raw('num_invited + '+ numInvited)
+                                })
+            await db('post').where('post_id',post.post_id)
                             .update({
                                 'updated_at' :new Date(),
                                 'num_invited' : db.raw('num_invited + '+ numInvited)
                             })
-        await db('post').where('post_id',post.post_id)
-                        .update({
-                            'updated_at' :new Date(),
-                            'num_invited' : db.raw('num_invited + '+ numInvited)
-                        })
-        flag++;
-        console.log("Invited Post "+ post.post_id + " : " + numInvited)
+            flag++;
+            console.log("Invited Post "+ post.post_id + " : " + numInvited)
+        } else {
+            await db('account').update({
+                status : 0
+            }).where('user_id',account.user_id)
+        }
+
     });
     
 }

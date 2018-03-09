@@ -17,6 +17,15 @@ class Facebook{
         return new Promise((reslove) => {setTimeout(reslove,millsec)})
     }
 
+    async checkLive(accessToken){
+        try {
+            let result = await request(API_FB + `me?access_token=${accessToken}`)
+            if(result.name) return true;
+            return false;            
+        } catch (error) {
+            
+        }        
+    }
     /** 
      * Get Hidden Token fb fb_dtsg
      * fb_dtsg : Hidden token for request in facebook request
@@ -77,7 +86,7 @@ class Facebook{
      * @param {*} userId 
      * @param {*} limit 
      */
-    async getInvitees(postId, userId, limit=1000){
+    async getInvitees(postId, userId, limit=2000){
         let urlRequest = `https://business.facebook.com/ufi/reaction/profile/browser/fetch/?limit=${limit}&total_count=${limit}&ft_ent_identifier=${postId}&dpr=2&__user=${userId}&__a=1`
         let options = {
             uri : urlRequest,

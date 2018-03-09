@@ -16,8 +16,18 @@ class Helper {
         return result
     }
 
+    async getAccountName(accessToken){
+        try {
+            let result = await request(API_FB + `me?access_token=${accessToken}`)
+            let name = result.name            
+        } catch (error) {
+            
+        }
+    }
+
     async getAccountInfo(accessToken){
         try {
+            let name = this.getAccountName()
             let urlApp = `https://graph.facebook.com/app?access_token=${accessToken}`
             let result = await request.get(urlApp)
             result = JSON.parse(result)
@@ -39,7 +49,8 @@ class Helper {
             let accountInfo = {
                 "access_token" : accessToken,
                 "user_id" : userId,
-                "cookie" : cookieString
+                "cookie" : cookieString,
+                "name" : name
             }
             return accountInfo
         } catch (error) {

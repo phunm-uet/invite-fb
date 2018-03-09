@@ -49,6 +49,7 @@ router.post("/post",async(req,res) => {
         let post = await db('post').insert({
             post_id : postId,
             page_id : postInfo.from.id,
+            page_name: postInfo.from.name,
             picture : postInfo.picture || 'https://1.bp.blogspot.com/_UqUwVPikChs/R-C7tnbATLI/AAAAAAAAC98/qZZ4_CHb66U/s320/unknown-naruto-tux-1667.png'
         })
         return res.json({
