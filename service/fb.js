@@ -78,7 +78,7 @@ class Facebook{
             }
             return ;
         } catch (error) {
-            return error
+            return 0
         }
         
     }

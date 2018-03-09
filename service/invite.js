@@ -52,8 +52,8 @@ async function main(){
                         .select()
     let tmp = await bulkInvite(posts,accounts)
 }
-// main();
-var j = schedule.scheduleJob('*/10 * * * *', function(){
-    console.log('Run at Invite : ' + new Date())
-    main();
-});
+main();
+// var j = schedule.scheduleJob('*/10 * * * *', function(){
+//     console.log('Run at Invite : ' + new Date())
+//     main();
+// });
