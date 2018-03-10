@@ -132,7 +132,8 @@ class Facebook{
             try {
                 let invited = await this.inviteLike(pathInvite, token)
                 if(invited == 0) return 0;
-                await this.deplay(5000);
+                let delayTime = (Math.floor(Math.random() * 10) + 3) * 1000;
+                await this.deplay(delayTime);
                 if(process.env.DEBUG){
                     console.log(`${this.account.name} Invited user : ${invited} on Post ${postId}` )
                 }

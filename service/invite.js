@@ -15,6 +15,7 @@ async function bulkInvite(posts, accounts, accountPerPost){
             let cookie = account.cookie
             let fb = new Facebook(account)
             let checkLive = await fb.checkLive()
+            fb.deplay(2000)
             console.log(account.name + " checkLive " + checkLive)
             if(checkLive){
                 let startIndex = index * MAXINVITEONCE
