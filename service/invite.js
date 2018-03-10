@@ -17,7 +17,7 @@ async function bulkInvite(posts, accounts, accountPerPost){
             let checkLive = await fb.checkLive()
             fb.deplay(2000)
             console.log(account.name + " checkLive " + checkLive)
-            if(checkLive){
+            if (checkLive) {
                 let startIndex = index * MAXINVITEONCE
                 let numInvited = await fb.invitePost(post.post_id, startIndex, MAXINVITEONCE);
             
@@ -34,6 +34,7 @@ async function bulkInvite(posts, accounts, accountPerPost){
                 flag++;
                 console.log(`${account.name} Invited Post `+ post.post_id + " : " + numInvited)
             } else {
+                console.log(account.name + " will be delete")
                 await db('account').update({
                     status : 0
                 }).where('user_id',account.user_id)
@@ -67,6 +68,7 @@ async function main(){
     let tmp = await bulkInvite(posts,accounts,accountPerPost)
 }
 
+// main()
 var j = schedule.scheduleJob('*/10 * * * *', function(){
     console.log('Run at Invite : ' + new Date())
     main();

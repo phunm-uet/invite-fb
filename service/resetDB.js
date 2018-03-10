@@ -6,7 +6,7 @@ const schedule = require('node-schedule')
 */
 async function resetNumInvited(){
     await db('account').where('updated_at','<',new Date())
-                    .where('num_invited', '>', MAXINVITE)
+                    .where('num_invited', '>=', MAXINVITE)
                     .update('num_invited',0)
 }
 
