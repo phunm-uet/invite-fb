@@ -37,7 +37,6 @@ router.post("/post",async(req,res) => {
     try {
         let rndToken = await helper.getRandomToken()
         postInfo = await helper.getInfoPost(postId,rndToken)
-        postInfo = JSON.parse(postInfo)
     } catch (error) {
         return res.json({
             status : 0,
@@ -47,9 +46,9 @@ router.post("/post",async(req,res) => {
     // add new post to dababase
     try {
         let post = await db('post').insert({
-            post_id : postId,
-            page_id : postInfo.from.id,
-            page_name : postInfo.from.name,
+            post_id : postInfo.postId,
+            page_id : postInfo.pageId,
+            page_name : postInfo.pageName,
             picture : postInfo.picture
         })
         return res.json({

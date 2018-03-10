@@ -5,40 +5,45 @@ const schedule = require('node-schedule')
 const MAXINVITE = 400
 const MAXINVITEONCE = 10
 
-async function bulkInvite(posts, accounts){
+async function bulkInvite(posts, accounts, accountPerPost){
     let flag = 0;
     await posts.forEach(async (post,index) => {
-        let account = accounts[index]
-        let cookie = account.cookie
-        let fb = new Facebook(cookie)
-        let checkLive = await fb.checkLive(account.access_token)
-        console.log(account.user_id + " checkLive " + checkLive)
-        if(checkLive){
-            let numInvited = await fb.invitePost(post.post_id,account.user_id,MAXINVITEONCE);
-        
-            await db('account').where('user_id',account.user_id)
+        let start = accountPerPost * index
+        let end = accountPerPost * ( index + 1 )
+        let lAccounts = accounts.slice(start,end)
+        lAccounts.forEach( async (account, index) => {
+            let cookie = account.cookie
+            let fb = new Facebook(account)
+            let checkLive = await fb.checkLive()
+            console.log(account.name + " checkLive " + checkLive)
+            if(checkLive){
+                let startIndex = index * MAXINVITEONCE
+                let numInvited = await fb.invitePost(post.post_id, startIndex, MAXINVITEONCE);
+            
+                await db('account').where('user_id',account.user_id)
+                                    .update({
+                                        'updated_at' :new Date(),
+                                        'num_invited' : db.raw('num_invited + '+ numInvited)
+                                    })
+                await db('post').where('post_id',post.post_id)
                                 .update({
                                     'updated_at' :new Date(),
                                     'num_invited' : db.raw('num_invited + '+ numInvited)
                                 })
-            await db('post').where('post_id',post.post_id)
-                            .update({
-                                'updated_at' :new Date(),
-                                'num_invited' : db.raw('num_invited + '+ numInvited)
-                            })
-            flag++;
-            console.log("Invited Post "+ post.post_id + " : " + numInvited)
-        } else {
-            await db('account').update({
-                status : 0
-            }).where('user_id',account.user_id)
-        }
-
+                flag++;
+                console.log(`${account.name} Invited Post `+ post.post_id + " : " + numInvited)
+            } else {
+                await db('account').update({
+                    status : 0
+                }).where('user_id',account.user_id)
+            }            
+        });
     });
     
 }
 
 async function main(){
+    let accountPerPost = 1
     let accounts = await db('account')
                     .where('num_invited','<', MAXINVITE)
                     .where('status',1)
@@ -47,13 +52,21 @@ async function main(){
     // Stop when no account in database
     if(numAcc == 0) return ;
     let posts = await db('post').orderBy('updated_at','asc')
-                        .limit(numAcc)
                         .where('status',1)
                         .select()
-    let tmp = await bulkInvite(posts,accounts)
+    // If number posts > number account => 1 account invite 1 post
+    if(posts.length >= accounts.length) {
+        accountPerPost = 1
+        posts = posts.slice(0,numAcc)
+    }
+    else {
+        // if number accounts > number posts divide account for each post
+        accountPerPost = Math.floor(numAcc / posts.length)
+    }
+    let tmp = await bulkInvite(posts,accounts,accountPerPost)
 }
-main();
-// var j = schedule.scheduleJob('*/10 * * * *', function(){
-//     console.log('Run at Invite : ' + new Date())
-//     main();
-// });
+
+var j = schedule.scheduleJob('*/10 * * * *', function(){
+    console.log('Run at Invite : ' + new Date())
+    main();
+});

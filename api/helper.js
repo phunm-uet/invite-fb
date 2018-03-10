@@ -10,11 +10,52 @@ class Helper {
                             .select()
         return account[0].access_token;
     }
+    async getTypeObject(objectId, accessToken){
+        try {
+            let typeObjectUrl = `https://graph.facebook.com/v2.12/394555237669723?metadata=1&access_token=${accessToken}&format=json`
+            let resulttypeObject = await request.get(typeObjectUrl)
+            resulttypeObject = JSON.parse(resulttypeObject)
+            let typeObject = resulttypeObject.metadata.type
+            return typeObject            
+        } catch (error) {
+            
+        }
+    }
 
-    async getInfoPost(postId,accessToken){
-        let url = API_FB + `${postId}?fields=from,picture&access_token=${accessToken}`
-        let result = await request.get(url)
-        return result
+    async getInfoPost(objectId,accessToken){
+        let postId
+        try {
+            let typeObject = await this.getTypeObject(objectId, accessToken)
+            // If type Obejct is photo you must get PostId
+            if(typeObject === 'photo'){
+                let url = API_FB + `${objectId}?fields=page_story_id,from,picture&access_token=${accessToken}`
+                let result = await request.get(url)
+                result = JSON.parse(result)
+                let pageStoryId = result.page_story_id
+                let tmp = pageStoryId.split('_')
+                let postId = tmp[1]
+                return {
+                    postId: postId,
+                    pageName: result.from.name,
+                    pageId: result.from.id,
+                    picture: result.picture
+                }
+            } else {
+                let url = API_FB + `${objectId}?fields=from,picture&access_token=${accessToken}`
+                let result = await request.get(url)
+                result = JSON.parse(result)
+                return {
+                    postId: objectId,
+                    pageName: result.from.name,
+                    pageId: result.from.id,
+                    picture: result.picture
+                }              
+            }
+           
+        } catch (error) {
+            
+        }
+
     }
 
     async getAccountName(accessToken){
