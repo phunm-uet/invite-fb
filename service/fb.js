@@ -25,11 +25,10 @@ class Facebook{
         try {
             let result = await request.get(urlRequest)
             result = JSON.parse(result)
-            if(result.name) return true;
-            return false;            
-        } catch (error) {
-            return false
-        }        
+            if(result.id) return true;
+            return false;          
+        } catch (error) {}     
+        return false   
     }
     /** 
      * Get Hidden Token fb fb_dtsg
@@ -47,8 +46,9 @@ class Facebook{
             let token = $("input[name='fb_dtsg']").val();
             return token;
         } catch (error) {
-            return error;
+            
         }
+        return ""
     }
 
 
