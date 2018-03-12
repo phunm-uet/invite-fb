@@ -73,14 +73,12 @@ class Facebook{
         }
         try {
             let result = await request(options)
-            if( result.includes('lid') ) {
-                let regex = /invitee=([0-9]+)/g
-                let tmp = regex.exec(pathInvite)
-                if(!tmp) { return 0 }
-                return tmp[1]
-            }
+            result  = result.replace('for (;;);','')
+            result = JSON.parse(result)
+            if(result.error) return result.errorSummary
+            return 1
         } catch (error) {
-            return 0
+
         }
         return 0;
     }
@@ -129,15 +127,20 @@ class Facebook{
         lInvitee = lInvitee.slice(startIndex, startIndex + maxLimitInvite)
         if(lInvitee.length == 0) return 0;
         for(let pathInvite of lInvitee){
+            let regex = /invitee=([0-9]+)/g
+            let tmp = regex.exec(pathInvite)
+            let inviteId = tmp[1]          
             try {
-                let invited = await this.inviteLike(pathInvite, token)
-                if(invited == 0) return 0;
-                let delayTime = (Math.floor(Math.random() * 10) + 3) * 1000;
-                await this.deplay(delayTime);
-                if(process.env.DEBUG){
-                    console.log(`${this.account.name} Invited user : ${invited} on Post ${postId}` )
+                let inviteResult = await this.inviteLike(pathInvite, token)
+                if(typeof inviteResult === 'string') console.log(`${this.account.name} error : ${inviteResult}`)
+                if(inviteResult == 1) {
+                    let delayTime = (Math.floor(Math.random() * 10) + 3) * 1000;
+                    await this.deplay(delayTime);
+                    if(process.env.DEBUG){
+                        console.log(`${this.account.name} Invited user : ${inviteId} on Post ${postId}` )
+                    }
+                    num_invited++; 
                 }
-                num_invited++;                
             } catch (error) {
                 console.log(error)
             }

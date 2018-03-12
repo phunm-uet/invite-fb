@@ -29,7 +29,8 @@ async function bulkInvite(posts, accounts, accountPerPost){
                 await db('post').where('post_id',post.post_id)
                                 .update({
                                     'updated_at' :new Date(),
-                                    'num_invited' : db.raw('num_invited + '+ numInvited)
+                                    'num_invited' : db.raw('num_invited + '+ numInvited),
+                                    'last_invited' : numInvited
                                 })
             } else {
                 console.log(account.name + " will be delete")
@@ -66,8 +67,8 @@ async function main(){
     let tmp = await bulkInvite(posts,accounts,accountPerPost)
 }
 
-// main()
-var j = schedule.scheduleJob('*/10 * * * *', function(){
-    console.log('Run at Invite : ' + new Date())
-    main();
-});
+main()
+// var j = schedule.scheduleJob('*/10 * * * *', function(){
+//     console.log('Run at Invite : ' + new Date())
+//     main();
+// });
