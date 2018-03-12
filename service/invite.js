@@ -23,7 +23,7 @@ async function bulkInvite(posts, accounts, accountPerPost){
                 if(invitedResult.error) {
                     // Update logs
                     await db('account').where('user_id',account.user_id)
-                                        .update('logs',invitedResult)
+                                        .update('logs',invitedResult.error)
                 }
                 console.log(`${account.name} Invited Post `+ post.post_id + " : " + invitedResult.num_invited)
                 await db('account').where('user_id',account.user_id)
