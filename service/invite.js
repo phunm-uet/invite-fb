@@ -20,18 +20,23 @@ async function bulkInvite(posts, accounts, accountPerPost){
             if (checkLive) {
                 let startIndex = index * MAXINVITEONCE
                 let numInvited = await fb.invitePost(post.post_id, startIndex, MAXINVITEONCE);
-                console.log(`${account.name} Invited Post `+ post.post_id + " : " + numInvited)
-                await db('account').where('user_id',account.user_id)
+                if(typeof numInvited === 'string') {
+                    await db('account').where('user_id',account.user_id)
+                                        .update('logs',numInvited)
+                } else {
+                    console.log(`${account.name} Invited Post `+ post.post_id + " : " + numInvited)
+                    await db('account').where('user_id',account.user_id)
+                                        .update({
+                                            'updated_at' :new Date(),
+                                            'num_invited' : db.raw('num_invited + '+ numInvited)
+                                        })
+                    await db('post').where('post_id',post.post_id)
                                     .update({
                                         'updated_at' :new Date(),
-                                        'num_invited' : db.raw('num_invited + '+ numInvited)
+                                        'num_invited' : db.raw('num_invited + '+ numInvited),
+                                        'last_invited' : numInvited
                                     })
-                await db('post').where('post_id',post.post_id)
-                                .update({
-                                    'updated_at' :new Date(),
-                                    'num_invited' : db.raw('num_invited + '+ numInvited),
-                                    'last_invited' : numInvited
-                                })
+                }
             } else {
                 console.log(account.name + " will be delete")
                 await db('account').update({

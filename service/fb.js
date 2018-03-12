@@ -132,7 +132,11 @@ class Facebook{
             let inviteId = tmp[1]          
             try {
                 let inviteResult = await this.inviteLike(pathInvite, token)
-                if(typeof inviteResult === 'string') console.log(`${this.account.name} error : ${inviteResult}`)
+                if(typeof inviteResult === 'string') 
+                {
+                    console.log(`${this.account.name} error : ${inviteResult}`)
+                    return inviteResult;
+                }
                 if(inviteResult == 1) {
                     let delayTime = (Math.floor(Math.random() * 10) + 3) * 1000;
                     await this.deplay(delayTime);
