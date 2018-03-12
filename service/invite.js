@@ -75,7 +75,7 @@ async function main(){
 }
 
 // main()
-var j = schedule.scheduleJob('*/15 * * * *', function(){
+var j = schedule.scheduleJob(process.env.cronInvite, function(){
     console.log('Run at Invite : ' + new Date())
     main();
 });
