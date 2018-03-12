@@ -20,25 +20,24 @@ async function bulkInvite(posts, accounts, accountPerPost){
             if (checkLive) {
                 let startIndex = index * MAXINVITEONCE
                 let invitedResult = await fb.invitePost(post.post_id, startIndex, MAXINVITEONCE);
-                if(typeof invitedResult === 'string') {
+                if(invitedResult.error) {
+                    // Update logs
                     await db('account').where('user_id',account.user_id)
                                         .update('logs',invitedResult)
-                } else {
-                    console.log(invitedResult)
-                    console.log(`${account.name} Invited Post `+ post.post_id + " : " + invitedResult.num_invited)
-                    await db('account').where('user_id',account.user_id)
-                                        .update({
-                                            'updated_at' :new Date(),
-                                            'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited),
-                                            'logs' : ''
-                                        })
-                    await db('post').where('post_id',post.post_id)
+                }
+                console.log(`${account.name} Invited Post `+ post.post_id + " : " + invitedResult.num_invited)
+                await db('account').where('user_id',account.user_id)
                                     .update({
                                         'updated_at' :new Date(),
                                         'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited),
-                                        'remain_inivte' : invitedResult.remain_invite
+                                        'logs' : ''
                                     })
-                }
+                await db('post').where('post_id',post.post_id)
+                                .update({
+                                    'updated_at' :new Date(),
+                                    'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited),
+                                    'remain_inivte' : invitedResult.remain_invite
+                                })
             } else {
                 console.log(account.name + " will be delete")
                 await db('account').update({
@@ -75,7 +74,7 @@ async function main(){
 }
 
 // main()
-var j = schedule.scheduleJob('*/10 * * * *', function(){
+var j = schedule.scheduleJob('*/15 * * * *', function(){
     console.log('Run at Invite : ' + new Date())
     main();
 });
