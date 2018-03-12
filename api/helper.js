@@ -1,6 +1,6 @@
 const request = require('request-promise')
 const db = require('../model/db')
-const API_FB = "https://graph.facebook.com/v2.10/"
+const API_FB = "https://graph.facebook.com/v2.2/"
 class Helper {
     async getRandomToken(){
         let account = await db('account')
@@ -44,11 +44,17 @@ class Helper {
                 let url = API_FB + `${objectId}?fields=from,picture&access_token=${accessToken}`
                 let result = await request.get(url)
                 result = JSON.parse(result)
+                let picture = ''
+                if(typeof(result.picture) === 'string') picture = result.picture
+                else {
+                    // Neu la post multiple object
+                    picture = result.picture.data.url
+                }
                 return {
                     postId: objectId,
                     pageName: result.from.name,
                     pageId: result.from.id,
-                    picture: result.picture
+                    picture: picture
                 }              
             }
            
