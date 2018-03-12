@@ -2,8 +2,9 @@ const Facebook = require('./fb.js');
 const db = require('../model/db')
 
 const schedule = require('node-schedule')
-const MAXINVITE = 400
-const MAXINVITEONCE = 10
+require('dotenv').config()
+const MAXINVITE = process.env.MAXINVITE
+const MAXINVITEONCE = process.env.MAXINVITEONCE
 
 async function bulkInvite(posts, accounts, accountPerPost){
     let flag = 0;
