@@ -1,8 +1,9 @@
 <template>
   <div class="col-md-8 col-md-offset-2">
-    <a class="btn btn-primary btn-success pull-right" data-toggle="modal" href='#modal-id'>
+    <a class="btn btn-primary btn-success pull-right" data-toggle="modal" href='#modal-id' disable="true">
       <span class="glyphicon glyphicon-plus"></span> Add Post</a>
-    <table class="table table-hover table-striped" style="margin-top : 20px">
+      <img src="../assets/loading.gif" style="width : 20%" v-if="loading">
+    <table class="table table-hover table-striped" style="margin-top : 20px" v-if="!loading">
           <thead>
               <tr>
                   <th class="text-center"> STT</th>
@@ -73,7 +74,8 @@ export default {
     return {
       posts: [],
       header: '',
-      postId: ''
+      postId: '',
+      loading: true
     }
   },
   mounted () {
@@ -81,12 +83,14 @@ export default {
   },
   methods: {
     loadPosts () {
+      this.loading = true
       let token = localStorage.getItem('token')
       let header = `Bearer ${token}`
       this.header = header
       axios.defaults.headers.common['Authorization'] = header
       axios.get(URL_API + '/posts').then(res => {
         this.posts = res.data
+        this.loading = false
       })
     },
     deletePost (postId, index) {

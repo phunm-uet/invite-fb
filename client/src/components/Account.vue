@@ -2,7 +2,8 @@
     <div class="col-md-8 col-md-offset-2 col-xs-12">
         <a class="btn btn-primary btn-success pull-right" data-toggle="modal" href='#modal-acc'>
           <span class="glyphicon glyphicon-plus"></span> Add Account</a>
-        <table class="table table-striped table-hover"  style="margin-top : 20px">
+           <img src="../assets/loading.gif" style="width : 20%" v-if="loading">
+        <table class="table table-striped table-hover"  style="margin-top : 20px" v-if="!loading">
             <thead>
                 <tr>
                     <th class="text-center">ID</th>
@@ -60,7 +61,8 @@ export default {
     return {
       accounts: [],
       accessToken: '',
-      header: ''
+      header: '',
+      loading: true
     }
   },
   mounted () {
@@ -68,12 +70,14 @@ export default {
   },
   methods: {
     loadAccounts () {
+      this.loading = true
       let token = localStorage.getItem('token')
       let header = `Bearer ${token}`
       this.header = header
       axios.defaults.headers.common['Authorization'] = header
       axios.get(URL_API + '/accounts').then(res => {
         this.accounts = res.data
+        this.loading = false
       })
     },
     addAccount (accessToken) {
