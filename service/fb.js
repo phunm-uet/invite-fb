@@ -73,12 +73,12 @@ class Facebook{
         }
         try {
             let result = await request(options)
-            if(result) {
+            if(result.includes('lid')) {
                 let regex = /invitee=([0-9]+)/g
                 let tmp = regex.exec(pathInvite)
                 if(!tmp) { return 0 }
                 return tmp[1]
-            }
+            } 
         } catch (error) {
             return 0
         }
