@@ -124,8 +124,12 @@ class Facebook{
         let token = await this.getToken()
         let num_invited = 0;
         let lInvitee = await this.getInvitees(postId)
+        let ableInivte = lInvitee.length
         lInvitee = lInvitee.slice(startIndex, startIndex + maxLimitInvite)
-        if(lInvitee.length == 0) return 0;
+        if(lInvitee.length == 0) return {
+            remain_invite: ableInivte - num_invited,
+            num_invited: num_invited
+        }
         for(let pathInvite of lInvitee){
             let regex = /invitee=([0-9]+)/g
             let tmp = regex.exec(pathInvite)
@@ -149,7 +153,10 @@ class Facebook{
                 console.log(error)
             }
         }
-        return num_invited;
+        return {
+            remain_invite: ableInivte - num_invited,
+            num_invited: num_invited
+        };
     }
 }
 
