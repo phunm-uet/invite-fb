@@ -12,7 +12,7 @@ class Helper {
     }
     async getTypeObject(objectId, accessToken){
         try {
-            let typeObjectUrl = `https://graph.facebook.com/v2.12/394555237669723?metadata=1&access_token=${accessToken}&format=json`
+            let typeObjectUrl = `https://graph.facebook.com/v2.2/${objectId}?metadata=1&access_token=${accessToken}&format=json`
             let resulttypeObject = await request.get(typeObjectUrl)
             resulttypeObject = JSON.parse(resulttypeObject)
             let typeObject = resulttypeObject.metadata.type
