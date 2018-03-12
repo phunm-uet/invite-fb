@@ -23,7 +23,7 @@
     "migrate": "node model/migrate",
     "client": "cd client && yarn run dev",
     "server": "node api/index",
-    "invite": "node service/invite",
-    "clearDB": "node service/resetDB"
+    "invite": "pm2 start service/invite.js --name invite --watch",
+    "resetDB": "pm2 start service/resetDB.js --name resetDB --watch"
   }
 }
