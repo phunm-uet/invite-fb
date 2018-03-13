@@ -1,39 +1,45 @@
 <template>
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-10 col-md-offset-1 col-xs-12">
     <a class="btn btn-primary btn-success pull-right" data-toggle="modal" href='#modal-id' disable="true">
       <span class="glyphicon glyphicon-plus"></span> Add Post</a>
       <img src="../assets/loading.gif" style="width : 20%" v-if="loading">
     <table class="table table-hover table-striped" style="margin-top : 20px" v-if="!loading">
           <thead>
               <tr>
-                  <th class="text-center"> STT</th>
+                  <th class="text-center hidden-xs"> STT</th>
                   <th></th>
-                  <th class="text-center">Post ID</th>
-                  <th class="text-center">Page</th>
+                  <th class="text-center hidden-xs">Post ID</th>
+                  <th class="text-center hidden-xs">Page</th>
                   <th class="text-center">Number Invited</th>
+                  <th class="text-center">Remaining</th>
                   <th class="text-center"> Status </th>
                   <th class="text-center">Action</th>
                 </tr>
           </thead>
           <tbody class="text-center center">
               <tr v-for="(post, index) in posts" :key="post.id">
-                  <td>{{post.id}}</td>
+                  <td class="hidden-xs">{{post.id}}</td>
                   <td><img :src="post.picture" style="width : 50px;"/></td>
-                  <td><a :href="'https://business.facebook.com/'+post.post_id" target="_blank">{{post.post_id}}</a></td>
-                  <td><a :href="'https://business.facebook.com/'+post.page_id" target="_blank">{{post.page_name}}</a></td>
+                  <td  class="hidden-xs"><a :href="'https://business.facebook.com/'+post.post_id" target="_blank">{{post.post_id}}</a></td>
+                  <td class="hidden-xs"><a :href="'https://business.facebook.com/'+post.page_id" target="_blank">{{post.page_name}}</a></td>
                   <td>{{post.num_invited}}</td>
+                  <td>
+                    <span class="label label-success" v-if="post.remain_inivte > 50">{{post.remain_inivte}}</span>
+                    <span class="label label-warning" v-if="(post.remain_inivte > 10 && post.remain_inivte < 50)">{{post.remain_inivte}}</span>
+                    <span class="label label-danger" v-if="post.remain_inivte <10 && post.remain_inivte >= 0">{{post.remain_inivte}}</span>
+                  </td>
                   <td>
                    <span class="label label-success" v-if="post.status == 1">Running</span>
                    <span class="label label-warning" v-if="post.status == 0">Stoped</span>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-danger btn-xs" @click="deletePost(post.post_id,index)">
+                    <button type="button" class="btn btn-danger btn-xs btn-action" @click="deletePost(post.post_id,index)">
                       <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
                     </button>
-                    <button type="button" class="btn btn-warning btn-xs" @click="updateStatus(post.post_id, index, 0)" v-if="post.status==1">
+                    <button type="button" class="btn btn-warning btn-xs btn-action" @click="updateStatus(post.post_id, index, 0)" v-if="post.status==1">
                       <span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pause
                     </button>
-                    <button type="button" class="btn btn-success btn-xs" @click="updateStatus(post.post_id, index, 1)" v-if="post.status==0">
+                    <button type="button" class="btn btn-success btn-xs btn-action" @click="updateStatus(post.post_id, index, 1)" v-if="post.status==0">
                       <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
                     </button>
                   </td>
@@ -140,3 +146,8 @@ export default {
   }
 }
 </script>
+<style>
+.btn-action {
+  margin: 5px
+}
+</style>
