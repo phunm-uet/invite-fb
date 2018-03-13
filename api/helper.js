@@ -31,9 +31,14 @@ class Helper {
                 let url = API_FB + `${objectId}?fields=page_story_id,from,picture&access_token=${accessToken}`
                 let result = await request.get(url)
                 result = JSON.parse(result)
-                let pageStoryId = result.page_story_id
-                let tmp = pageStoryId.split('_')
-                let postId = tmp[1]
+                let postId = ''
+                if(result.page_story_id) {
+                    let pageStoryId = result.page_story_id
+                    let tmp = pageStoryId.split('_')
+                    postId = tmp[1]
+                } else {
+                    postId = objectId
+                }
                 return {
                     postId: postId,
                     pageName: result.from.name,

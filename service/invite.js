@@ -72,7 +72,7 @@ async function main(){
     if(numAcc == 0) return ;
     let posts = await db('post')
                         .where('status',1)
-                        .andWhere('remain_inivte','>',0)
+                        .andWhere('remain_inivte','!=',0)
                         .orWhere('updated_at','<',d)
                         .select()
     // If number posts > number account => 1 account invite 1 post
@@ -87,8 +87,12 @@ async function main(){
     let tmp = await bulkInvite(posts,accounts,accountPerPost)
 }
 
-// main()
-var j = schedule.scheduleJob(process.env.cronInvite, function(){
-    console.log('Run at Invite : ' + new Date())
-    main();
-});
+if(process.env.enviroment === 'dev'){
+    main()
+}
+else {
+    var j = schedule.scheduleJob(process.env.cronInvite, function(){
+        console.log('Run at Invite : ' + new Date())
+        main();
+    });
+}
