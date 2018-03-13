@@ -54,13 +54,13 @@ async function main(){
     let accountPerPost = 1
     let accounts = await db('account')
                     .where('num_invited','<', MAXINVITE)
-                    .orderBy('remain_inivte','desc')
                     .where('status',1)
                     .select()
     let numAcc = accounts.length;
     // Stop when no account in database
     if(numAcc == 0) return ;
-    let posts = await db('post').orderBy('updated_at','asc')
+    let posts = await db('post')
+                        .orderBy('remain_inivte','desc')
                         .where('status',1)
                         .select()
     // If number posts > number account => 1 account invite 1 post
