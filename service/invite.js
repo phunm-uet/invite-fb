@@ -33,12 +33,21 @@ async function bulkInvite(posts, accounts, accountPerPost){
                                         'updated_at' :new Date(),
                                         'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited)
                                     })
-                await db('post').where('post_id',post.post_id)
-                                .update({
-                                    'updated_at' :new Date(),
-                                    'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited),
-                                    'remain_inivte' : invitedResult.remain_invite
-                                })
+                if(invitedResult.remain_invite < 10){
+                    // If remaining < 10 don't update updated_date
+                    await db('post').where('post_id',post.post_id)
+                    .update({
+                        'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited),
+                        'remain_inivte' : invitedResult.remain_invite
+                    })
+                } else {
+                    await db('post').where('post_id',post.post_id)
+                    .update({
+                        'updated_at' :new Date(),
+                        'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited),
+                        'remain_inivte' : invitedResult.remain_invite
+                    })
+                }
             } else {
                 console.log(account.name + " will be delete")
                 await db('account').update({
@@ -52,6 +61,8 @@ async function bulkInvite(posts, accounts, accountPerPost){
 
 async function main(){
     let accountPerPost = 1
+    var d = new Date();
+    d.setHours(d.getHours() - 3);
     let accounts = await db('account')
                     .where('num_invited','<', MAXINVITE)
                     .where('status',1)
@@ -60,8 +71,9 @@ async function main(){
     // Stop when no account in database
     if(numAcc == 0) return ;
     let posts = await db('post')
-                        .orderBy('remain_inivte','desc')
                         .where('status',1)
+                        .andWhere('remain_inivte','>',0)
+                        .orWhere('updated_at','<',d)
                         .select()
     // If number posts > number account => 1 account invite 1 post
     if(posts.length >= accounts.length) {
@@ -75,8 +87,8 @@ async function main(){
     let tmp = await bulkInvite(posts,accounts,accountPerPost)
 }
 
-// main()
-var j = schedule.scheduleJob(process.env.cronInvite, function(){
-    console.log('Run at Invite : ' + new Date())
-    main();
-});
+main()
+// var j = schedule.scheduleJob(process.env.cronInvite, function(){
+//     console.log('Run at Invite : ' + new Date())
+//     main();
+// });
