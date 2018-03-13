@@ -31,8 +31,7 @@ async function bulkInvite(posts, accounts, accountPerPost){
                 await db('account').where('user_id',account.user_id)
                                     .update({
                                         'updated_at' :new Date(),
-                                        'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited),
-                                        'logs' : ''
+                                        'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited)
                                     })
                 await db('post').where('post_id',post.post_id)
                                 .update({
@@ -55,6 +54,7 @@ async function main(){
     let accountPerPost = 1
     let accounts = await db('account')
                     .where('num_invited','<', MAXINVITE)
+                    .orderBy('remain_inivte','desc')
                     .where('status',1)
                     .select()
     let numAcc = accounts.length;
