@@ -23,7 +23,7 @@ async function bulkInvite(posts, accounts, accountPerPost){
                 let invitedResult = await fb.invitePost(post.post_id, startIndex, MAXINVITEONCE);
                 if(invitedResult.error) {
                     // Update logs
-                    console.log("Log here")
+                    console.log(`Log ${invitedResult.error}`)
                     await db('account').where('user_id',account.user_id)
                                         .update('logs',invitedResult.error)
                 }
