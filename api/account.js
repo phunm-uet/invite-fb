@@ -43,6 +43,7 @@ router.post('/account', async (req,res) => {
         return res.json(account)        
     } catch (error) {
         return res.json({
+            error : error,
             status : 0,
             message : "Fail to insert Account"
         })

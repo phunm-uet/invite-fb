@@ -18,7 +18,7 @@
           </thead>
           <tbody class="text-center center">
               <tr v-for="(post, index) in posts" :key="post.id">
-                  <td class="hidden-xs">{{post.id}}</td>
+                  <td class="hidden-xs">{{index+1}}</td>
                   <td><img :src="post.picture" style="width : 50px;"/></td>
                   <td  class="hidden-xs"><a :href="'https://business.facebook.com/'+post.post_id" target="_blank">{{post.post_id}}</a></td>
                   <td class="hidden-xs"><a :href="'https://business.facebook.com/'+post.page_id" target="_blank">{{post.page_name}}</a></td>

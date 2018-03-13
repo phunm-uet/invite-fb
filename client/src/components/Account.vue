@@ -16,7 +16,7 @@
             </thead>
             <tbody>
                 <tr v-for='(acc,index) in accounts' :key="index">
-                    <td>{{acc.id}}</td>
+                    <td>{{index+1}}</td>
                     <td>{{acc.user_id}}</td>
                     <td>{{acc.name}}</td>
                     <!-- <td>{{acc.access_token}}</td> -->
