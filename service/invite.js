@@ -75,8 +75,8 @@ async function main(){
     let tmp = await bulkInvite(posts,accounts,accountPerPost)
 }
 
-main()
-// var j = schedule.scheduleJob(process.env.cronInvite, function(){
-//     console.log('Run at Invite : ' + new Date())
-//     main();
-// });
+// main()
+var j = schedule.scheduleJob(process.env.cronInvite, function(){
+    console.log('Run at Invite : ' + new Date())
+    main();
+});
