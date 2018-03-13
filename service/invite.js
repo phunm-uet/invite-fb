@@ -21,18 +21,21 @@ async function bulkInvite(posts, accounts, accountPerPost){
             if (checkLive) {
                 let startIndex = index * MAXINVITEONCE
                 let invitedResult = await fb.invitePost(post.post_id, startIndex, MAXINVITEONCE);
+                console.log(`${account.name} Invited Post `+ post.post_id + " : " + invitedResult.num_invited)
                 if(invitedResult.error) {
                     // Update logs
                     console.log(`Log ${invitedResult.error}`)
                     await db('account').where('user_id',account.user_id)
                                         .update('logs',invitedResult.error)
+                                        .update('updated_at' ,new Date())
+                } else {
+                    await db('account').where('user_id',account.user_id)
+                    .update({
+                        'updated_at' :new Date(),
+                        'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited)
+                        'log' : ''
+                    })
                 }
-                console.log(`${account.name} Invited Post `+ post.post_id + " : " + invitedResult.num_invited)
-                await db('account').where('user_id',account.user_id)
-                                    .update({
-                                        'updated_at' :new Date(),
-                                        'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited)
-                                    })
                 if(invitedResult.remain_invite < 10){
                     // If remaining < 10 don't update updated_date
                     await db('post').where('post_id',post.post_id)
@@ -87,7 +90,8 @@ async function main(){
     let tmp = await bulkInvite(posts,accounts,accountPerPost)
 }
 
-if(process.env.enviroment === 'dev'){
+if(process.env.enviroment == 'dev'){
+    console.log("Dev")
     main()
 }
 else {
