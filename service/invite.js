@@ -33,7 +33,7 @@ async function bulkInvite(posts, accounts, accountPerPost){
                     .update({
                         'updated_at' :new Date(),
                         'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited),
-                        'log' : ''
+                        'logs' : ''
                     })
                 }
                 if(invitedResult.remain_invite < 10){
