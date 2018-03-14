@@ -32,7 +32,7 @@ async function bulkInvite(posts, accounts, accountPerPost){
                     await db('account').where('user_id',account.user_id)
                     .update({
                         'updated_at' :new Date(),
-                        'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited)
+                        'num_invited' : db.raw('num_invited + '+ invitedResult.num_invited),
                         'log' : ''
                     })
                 }
