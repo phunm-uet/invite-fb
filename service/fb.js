@@ -130,11 +130,11 @@ class Facebook{
             remain_invite: ableInivte - num_invited,
             num_invited: num_invited
         }
-        for(let pathInvite of lInvitee){
-            let regex = /invitee=([0-9]+)/g
-            let tmp = regex.exec(pathInvite)
-            let inviteId = tmp[1]          
+        for(let pathInvite of lInvitee){         
             try {
+                let regex = /invitee=([0-9]+)/g
+                let tmp = regex.exec(pathInvite)
+                let inviteId = tmp[1] 
                 let inviteResult = await this.inviteLike(pathInvite, token)
                 // If error when invite
                 if(typeof inviteResult === 'string') 
