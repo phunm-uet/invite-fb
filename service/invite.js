@@ -2,6 +2,7 @@ const Facebook = require('./fb.js');
 const db = require('../model/db')
 
 const schedule = require('node-schedule')
+const isOnline = require('is-online');
 require('dotenv').config()
 const MAXINVITE = process.env.MAXINVITE
 const MAXINVITEONCE = process.env.MAXINVITEONCE
@@ -78,6 +79,7 @@ async function main(){
                         .andWhere('remain_inivte','!=',0)
                         .orWhere('updated_at','<',d)
                         .select()
+    if(posts.length == 0) return ;
     // If number posts > number account => 1 account invite 1 post
     if(posts.length >= accounts.length) {
         accountPerPost = 1
@@ -91,12 +93,22 @@ async function main(){
 }
 
 if(process.env.enviroment == 'dev'){
-    console.log("Dev")
-    main()
+    console.log('Run at Invite : ' + new Date())
+    isOnline().then(online => {
+        if(online) main()
+        else {
+            console.log("Network down")
+        }
+    });
 }
 else {
     var j = schedule.scheduleJob(process.env.cronInvite, function(){
         console.log('Run at Invite : ' + new Date())
-        main();
+        isOnline().then(online => {
+            if(online) main()
+            else {
+                console.log("Network down")
+            }
+        });
     });
 }
