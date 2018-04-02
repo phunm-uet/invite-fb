@@ -10,6 +10,7 @@ const MAXINVITEONCE = process.env.MAXINVITEONCE
 async function bulkInvite(posts, accounts, accountPerPost){
     let flag = 0;
     await posts.forEach(async (post,index) => {
+        let oldRemaining = post.remain_inivte
         let start = accountPerPost * index
         let end = accountPerPost * ( index + 1 )
         let lAccounts = accounts.slice(start,end)
@@ -23,6 +24,7 @@ async function bulkInvite(posts, accounts, accountPerPost){
                 let startIndex = index * MAXINVITEONCE
                 let invitedResult = await fb.invitePost(post.post_id, startIndex, MAXINVITEONCE);
                 console.log(`${account.name} Invited Post `+ post.post_id + " : " + invitedResult.num_invited)
+                // Update Account 
                 if(invitedResult.error) {
                     // Update logs
                     console.log(`Log ${invitedResult.error}`)
@@ -37,7 +39,8 @@ async function bulkInvite(posts, accounts, accountPerPost){
                         'logs' : ''
                     })
                 }
-                if(invitedResult.remain_invite < 10){
+                // Update Post 
+                if(invitedResult.remain_invite < 10 && oldRemaining >= 10){
                     // If remaining < 10 don't update updated_date
                     await db('post').where('post_id',post.post_id)
                     .update({
