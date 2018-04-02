@@ -16,6 +16,6 @@ async function checkLive(){
     });
 }
 
-var tmp = schedule.scheduleJob('* /1 * * *', function(){
+var tmp = schedule.scheduleJob('* */1 * * *', function(){
     console.log(`Run at : ${ new Date() }`)
 })
